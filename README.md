@@ -1,2 +1,3 @@
 # hpp-kratos
-kratos微服务实践，慢慢更新吧
+
+kratos 框架微服务实践，慢慢更新吧
