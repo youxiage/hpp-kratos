@@ -30,7 +30,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "../../configs/dev", "config path")
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
@@ -63,7 +63,12 @@ func main() {
 			file.NewSource(flagconf),
 		),
 	)
-	defer c.Close()
+	// 关闭配置文件
+	defer func(c config.Config) {
+		if err := c.Close(); err != nil {
+			log.Errorf("config file close err : %+v", err)
+		}
+	}(c)
 
 	if err := c.Load(); err != nil {
 		panic(err)
@@ -74,7 +79,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Etcd, logger)
 	if err != nil {
 		panic(err)
 	}

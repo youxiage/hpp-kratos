@@ -1,6 +1,7 @@
 package data
 
 import (
+	"fmt"
 	"hpp-kratos/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -16,9 +17,13 @@ type Data struct {
 }
 
 // NewData .
-func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
+func NewData(c *conf.Data, logger log.Logger, etcd *conf.Etcd) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
+
+	fmt.Println(c.Database.Source)
+	fmt.Println(c.Redis.Addr)
+	fmt.Println(etcd.Addresses)
 	return &Data{}, cleanup, nil
 }
