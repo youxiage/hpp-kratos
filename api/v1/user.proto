@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package hpp_kratos.api.v1;
+
+option go_package = "hpp-kratos/api/v1;v1";
+
+service User {
+  // GetUserInfo 获取用户信息
+  rpc GetUserInfo (UserInfoRequest) returns (UserInfoReply);
+}
+
+message UserInfoRequest {
+  int32 uid = 1;
+}
+
+message UserInfoReply {
+  int32 uid = 1;
+  string name = 2;
+}

@@ -31,7 +31,8 @@ func wireApp(confServer *conf.Server, confData *conf.Data, etcd *conf.Etcd, logg
 	greeterRepo := data.NewGreeterRepo(dataData, logger)
 	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
 	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
+	userService := service.NewUserService(greeterUsecase)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, userService, logger)
 	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
